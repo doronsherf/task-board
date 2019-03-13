@@ -27,7 +27,7 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Erica+One|Kite+One|Sofadi+One" rel="stylesheet"> <!-- a googlelips fonts (3 packages) -->
     <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Erica+One" rel="stylesheet"> <!-- a googlelips fonts (2 packages) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> <!--JQuery CDN from google site-->
 
     <script src="./scripts/date_string_ymd2dmy.js"> </script> <!-- a file with function to transform number to formated date string -->
 
@@ -205,7 +205,7 @@
             vtsk_title = document.getElementById("tsk_title").value; // variable of tsk_title
             vtsk_info = document.getElementById("tsk_info").value;  // variable of tsk_info
             vtsk_date = document.getElementById("tsk_date").value; // variable of tsk_date
-            vtsk_date = date_string_ymd2dmy(vtsk_date );
+            vtsk_date = date_string_ymd2dmy(vtsk_date ) // hour formated to: d/m/yy
             vtsk_hr = document.getElementById("tsk_hr").value; // variable of tsk_hr
 
         /* variables to be displyed on petek */
@@ -245,7 +245,6 @@
 
         /*   handle (by replacing) "special charecters" to prevent JSON fail  */
         function rplc_special_chars(string2json) {
-
             string2json = string2json.replace( /\"/g, "'");      // replace double quote to single quote 
             string2json = string2json.replace( /\n/g, "\\n");    // replace \n (line feed - new line) to \\n
             string2json = string2json.replace( /\r/g, "\\n");    // replace \r (carriage return)     to  \\n 
@@ -256,8 +255,9 @@
             return string2json; 
         }
 
+        /*   remove "special charecters" to prevent JSON.parse fail  */
         function remov_special_chars(string) {
-
+            string = string.replace( /\"/g, "");    // remove double quote 
             string = string.replace( /\n/g, "");    // remove \n (line feed - new line)
             string = string.replace( /\r/g, "");    // remove \r (carriage return)      
             string = string.replace( /\t/g, "");    // remove \t (horizontal tab)       
@@ -330,7 +330,7 @@
             p_date.innerText = date;
             p_hour.innerText = hr;
             p_full_tsk.innerText = tsk_full_string;
-            delet_btn.innerHTML = "<span class='glyphicon glyphicon-trash' >  </span></p>" ; // USING glyphicon
+            delet_btn.innerHTML = "<span class='glyphicon glyphicon-trash' >  </span>" ; // USING glyphicon
 
         /* Appending petek children*/
             petek.appendChild(p_title);
@@ -382,7 +382,7 @@
             p_hour.style.fontSize = "12px";
 
         /* petek full_tsk style */
-            // p_full_tsk.style.display = "none";
+            p_full_tsk.style.display = "none";
 
         /* The "Delete Task" button div style */
             delet_btn.style.position = "absolute";    
@@ -399,7 +399,7 @@
 
             delet_btn.addEventListener("mouseover", 
                 function() { delet_btn.style.cursor = "pointer";
-                            delet_btn.style.border.bottom = " 1px solid red";  
+                             delet_btn.style.border.bottom = " 2px solid red";  
                             }); 
 
             delet_btn.addEventListener("mouseout", 
@@ -435,7 +435,6 @@
                     function() { delet_all(); });
 
                     del_all_btn_Exist = true;
-
             }
         }
 
@@ -472,7 +471,7 @@
 
         function  r_u_sure(the_action) { // r_u_sure? popup to confirm delete
             var sure = confirm("Are you sure you want to " + the_action +"?");    
-            if (!sure) { alert( the_action +"was NOT Executed!");}
+            if (!sure) { alert( the_action +" was NOT Executed!");}
             return sure;
         } 
 
@@ -489,10 +488,10 @@
                 tsks = json2aray(tsks_strng);
 
                 for (var i=0 ; i<tsks.length ; i++) {
-                    vtsk_title = tsks[i].title ;
-                    vtsk_info  = tsks[i].info ; 
-                    vtsk_date  = tsks[i].date ; 
-                    vtsk_hr    = tsks[i].hour ; 
+                    vtsk_title    = tsks[i].title ;
+                    vtsk_info     = tsks[i].info ; 
+                    vtsk_date     = tsks[i].date ; 
+                    vtsk_hr       = tsks[i].hour ; 
                     vtsk_full_tsk = tsks[i].full_tsk ; 
                     make_petek(vtsk_title, vtsk_info, vtsk_date, vtsk_hr, vtsk_full_tsk);// Make "petek"
                     delet_all_btn();
@@ -527,4 +526,3 @@
 
     </body>
     </html>
-
